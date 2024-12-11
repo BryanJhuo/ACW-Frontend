@@ -1,12 +1,13 @@
 import './index.css'
-import Sign_in from "./sign_in.tsx";
+import Authentication_Page from "./Authentication_Page.tsx"
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
-    return (
-        <>
-            <Sign_in></Sign_in>
-        </>
-    )
+  return (
+    <Routes>
+      <Route path='/auth' Component={Authentication_Page}></Route>
+    </Routes>
+  )
 }
 
 export default App
