@@ -1,5 +1,5 @@
 import React from "react";
-import Dropdown from "./Dropdown";
+import Dropdown from "../components/Dropdown";
 
 const ProductDetail: React.FC = () => {
   const quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
