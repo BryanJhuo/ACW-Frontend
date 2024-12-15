@@ -1,5 +1,5 @@
 import './index.css'
-import Authentication_Page from "./Pages/Authentication_Page.tsx"
+import Authentication_Page from "./Pages/AuthenticationPage.tsx"
 import FrontPage from './Pages/FrontPage.tsx'
 import ShoppingCart from './Pages/ShoppingCartPage.tsx'
 import { Routes, Route } from 'react-router-dom'
