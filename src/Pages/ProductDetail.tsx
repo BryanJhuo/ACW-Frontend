@@ -13,7 +13,7 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
+    <div className="flex flex-col items-center gap-8 p-8 min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
 
       <div className="flex flex-col lg:flex-row lg:items-start gap-8 w-full max-w-5xl">
@@ -48,6 +48,19 @@ const ProductDetail: React.FC = () => {
           </button>
         </div>
       </div>
+      {/* 商品描述 */}
+      <div className="w-full max-w-5xl mt-8">
+        <h2 className="text-xl font-bold mb-4">商品描述</h2>
+        <p className="text-gray-700 leading-relaxed">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
+          laudantium provident, necessitatibus voluptates ex consectetur nemo
+          recusandae a possimus delectus excepturi qui accusantium quidem, natus
+          voluptas similique quisquam aliquam sed? Exercitationem ea cumque nam
+          soluta quidem dolorum, enim sint. Quidem aliquam quae dolore natus
+          nihil at cumque, repellat dignissimos voluptatibus.
+        </p>
+      </div>
+      {/* 頁尾 */}
       <Footer />
     </div>
   );
