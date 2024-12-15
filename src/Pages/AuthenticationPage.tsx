@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function Authentication_Page() {
+function AuthenticationPage() {
   const [searchText, setSearchText] = useState(''); // 儲存搜尋文字
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -130,4 +130,4 @@ function Authentication_Page() {
   );
 }
 
-export default Authentication_Page;
+export default AuthenticationPage

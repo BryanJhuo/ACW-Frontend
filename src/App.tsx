@@ -1,5 +1,5 @@
 import './index.css'
-import Authentication_Page from "./Pages/AuthenticationPage.tsx"
+import AuthenticationPage from "./Pages/AuthenticationPage.tsx"
 import FrontPage from './Pages/FrontPage.tsx'
 import ShoppingCart from './Pages/ShoppingCartPage.tsx'
 import { Routes, Route } from 'react-router-dom'
@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       {/* Authentication route */}
-      <Route path='/members' Component={Authentication_Page} />
+      <Route path='/members' Component={AuthenticationPage} />
       
       {/* FrontPage route */}
       <Route path='/' Component={FrontPage} />
