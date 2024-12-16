@@ -34,7 +34,7 @@ function Authentication_Page() {
   };
 
   return (
-    <div className="flex flex-col item-center min-h-screen">
+    <div className="flex flex-col item-center ">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       <div className="flex flex-col min-h-min my-10">
         {/* 中間內容區域 */}
