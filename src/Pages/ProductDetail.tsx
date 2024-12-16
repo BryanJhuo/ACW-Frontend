@@ -34,7 +34,10 @@ const ProductDetail: React.FC = () => {
         <div className="flex-1 space-y-4">
           <h1 className="text-2xl font-bold">我是商品</h1>
           <span className="inline-block bg-green-200 text-green-800 px-2 py-1 rounded">
-            Tag1
+            動漫Tag
+          </span>
+          <span className="inline-block bg-red-200 text-red-800 px-2 py-1 rounded">
+            類型Tag
           </span>
           <p className="text-3xl font-bold">$10000000000</p>
 
