@@ -13,10 +13,10 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 p-8">
+    <div className="flex flex-col items-center">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
 
-      <div className="flex flex-col lg:flex-row lg:items-start gap-8 w-full max-w-5xl">
+      <div className="flex flex-col lg:flex-row lg:items-start gap-8 p-8 w-full max-w-5xl ">
         {/* 圖片 */}
         <div className="relative w-full lg:w-1/2">
           <div className="w-80 h-80 bg-gray-200 flex items-center justify-center">
@@ -33,7 +33,7 @@ const ProductDetail: React.FC = () => {
         {/* 商品資訊 */}
         <div className="flex-1 space-y-4">
           <h1 className="text-2xl font-bold">我是商品</h1>
-          <span className="inline-block bg-green-200 text-green-800 px-2 py-1 rounded">
+          <span className="inline-block bg-green-200 text-green-800 px-2 py-1 mr-2 rounded">
             動漫Tag
           </span>
           <span className="inline-block bg-red-200 text-red-800 px-2 py-1 rounded">
