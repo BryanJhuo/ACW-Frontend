@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { useState } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function AuthenticationPage() {
   const [searchText, setSearchText] = useState(''); // 儲存搜尋文字
@@ -16,38 +16,43 @@ function AuthenticationPage() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (activeTab === 'sign-in') handleSignIn();
+    if (activeTab === "sign-in") handleSignIn();
     else handleSignUp();
   };
 
   const handleSignIn = () => {
     // TODO : Handle sign-in logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log("Email:", email);
+    console.log("Password:", password);
   };
 
   const handleSignUp = () => {
     // TODO : Handle sign-up logic here
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
   };
 
   return (
-    <>
+    <div className="flex flex-col item-center ">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       <div className="flex flex-col min-h-min my-10">
         {/* 中間內容區域 */}
         <div className="flex flex-1 justify-center items-center flex-col">
           <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow border-gray-300 border">
             <div className="font-funnel-sans text-6xl font-extrabold text-center mb-6">
-              {activeTab === 'sign-in' ? 'Sign In' : 'Sign Up'}
+              {activeTab === "sign-in" ? "Sign In" : "Sign Up"}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {activeTab === 'sign-up' && (
+              {activeTab === "sign-up" && (
                 <div className="fa fa-trash">
-                  <label htmlFor="name" className="block font-bold text-gray-700">姓名：</label>
+                  <label
+                    htmlFor="name"
+                    className="block font-bold text-gray-700"
+                  >
+                    姓名：
+                  </label>
                   <input
                     type="text"
                     id="name"
@@ -59,7 +64,12 @@ function AuthenticationPage() {
                 </div>
               )}
               <div>
-                <label htmlFor="email" className="block font-bold text-gray-700">信箱：</label>
+                <label
+                  htmlFor="email"
+                  className="block font-bold text-gray-700"
+                >
+                  信箱：
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -70,7 +80,12 @@ function AuthenticationPage() {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block font-bold text-gray-700">密碼：</label>
+                <label
+                  htmlFor="password"
+                  className="block font-bold text-gray-700"
+                >
+                  密碼：
+                </label>
                 <input
                   type="password"
                   id="password"
@@ -84,7 +99,7 @@ function AuthenticationPage() {
                 type="submit"
                 className="w-full px-4 py-2 font-bold text-white bg-gray-900 rounded hover:bg-black focus:outline-none focus:ring"
               >
-                {activeTab === 'sign-in' ? 'Sign In' : 'Sign Up'}
+                {activeTab === "sign-in" ? "Sign In" : "Sign Up"}
               </button>
             </form>
           </div>
@@ -94,39 +109,43 @@ function AuthenticationPage() {
             <div className="flex items-center justify-between w-max border border-gray-400 rounded-full">
               {/* Sign In Button */}
               <button
-                onClick={() => setActiveTab('sign-in')}
-                className={`relative flex items-center px-6 py-3 rounded-l-full border-r border-gray-400 ${activeTab === 'sign-in'
-                  ? 'bg-purple-100 text-black'
-                  : 'text-gray-500 bg-transparent'
-                  }`}
+                onClick={() => setActiveTab("sign-in")}
+                className={`relative flex items-center px-6 py-3 rounded-l-full border-r border-gray-400 ${
+                  activeTab === "sign-in"
+                    ? "bg-purple-100 text-black"
+                    : "text-gray-500 bg-transparent"
+                }`}
               >
-                {activeTab === 'sign-in' && (
-                  <span className="absolute left-2 text-purple-700 mx-1">✔</span>
+                {activeTab === "sign-in" && (
+                  <span className="absolute left-2 text-purple-700 mx-1">
+                    ✔
+                  </span>
                 )}
                 <span className="ml-4 font-funnel-sans">Sign In</span>
               </button>
 
               {/* Sign Up Button */}
               <button
-                onClick={() => setActiveTab('sign-up')}
-                className={`relative flex items-center px-6 py-3 rounded-r-full ${activeTab === 'sign-up'
-                  ? 'bg-purple-100 text-black'
-                  : 'text-gray-500 bg-transparent'
-                  }`}
+                onClick={() => setActiveTab("sign-up")}
+                className={`relative flex items-center px-6 py-3 rounded-r-full ${
+                  activeTab === "sign-up"
+                    ? "bg-purple-100 text-black"
+                    : "text-gray-500 bg-transparent"
+                }`}
               >
-                {activeTab === 'sign-up' && (
-                  <span className="absolute left-2 text-purple-700 mx-1">✔</span>
+                {activeTab === "sign-up" && (
+                  <span className="absolute left-2 text-purple-700 mx-1">
+                    ✔
+                  </span>
                 )}
                 <span className="ml-4 font-funnel-sans">Sign Up</span>
               </button>
             </div>
           </div>
         </div>
-
       </div>
       <Footer />
-    </>
-
+    </div>
   );
 }
 
