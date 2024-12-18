@@ -2,12 +2,12 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-function Authentication_Page() {
-  const [searchText, setSearchText] = useState(""); // 儲存搜尋文字
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [activeTab, setActiveTab] = useState("sign-in");
+function AuthenticationPage() {
+  const [searchText, setSearchText] = useState(''); // 儲存搜尋文字
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [activeTab, setActiveTab] = useState('sign-in');
 
   // 當文字改變時更新 searchText
   const handleSearchChange = (text: string) => {
@@ -149,4 +149,4 @@ function Authentication_Page() {
   );
 }
 
-export default Authentication_Page;
+export default AuthenticationPage
