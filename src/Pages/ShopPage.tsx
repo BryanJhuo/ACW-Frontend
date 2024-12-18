@@ -5,7 +5,7 @@ import ProductGrid from "../components/ProductGrid"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
-function ItemListPage() {
+function ShopPage() {
   const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   // TODO : fetch items from API
@@ -15,6 +15,7 @@ function ItemListPage() {
     price: index,
     tags: ["tag1", "tag2"],
     description: "Body text.",
+    image: "https://placehold.co/400",
     liked: false,
     toggleLiked: () => {
       // TODO : call API to toggle liked status
@@ -127,4 +128,4 @@ function ItemListPage() {
   )
 }
 
-export default ItemListPage
+export default ShopPage

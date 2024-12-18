@@ -1,8 +1,7 @@
-import './index.css'
 import AuthenticationPage from "./Pages/AuthenticationPage.tsx"
 import FrontPage from './Pages/FrontPage.tsx'
 import ShoppingCart from './Pages/ShoppingCartPage.tsx'
-import ItemListPage from './Pages/ItemListPage.tsx'
+import ShopPage from './Pages/ShopPage.tsx'
 import { Routes, Route } from 'react-router-dom'
 import ProductDetail from "./Pages/ProductDetail.tsx";
 
@@ -21,8 +20,8 @@ function App() {
       {/* ProductDetail route */}
       <Route path="/product" Component={ProductDetail} />
 
-      {/* ItemList route */}
-      <Route path='/shop' Component={ItemListPage} />
+      {/* Shop route */}
+      <Route path='/shop' Component={ShopPage} />
     </Routes>
   );
 }
