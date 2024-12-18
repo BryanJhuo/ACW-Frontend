@@ -15,7 +15,7 @@ interface InputFieldProps {
 }
 
 const Tabs: React.FC<TabProps> = ({ activeTab, onChange }) => {
-  const tabs = ["個人資料", "訂單狀態", "預填訂購資料"];
+  const tabs = ["個人資料", "訂單狀態", "預填訂購資料", "喜好項目"];
   return (
     <div className="flex justify-center space-x-8 text-gray-500 text-lg">
       {tabs.map((tab) => (
