@@ -46,7 +46,7 @@ const FrontPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       {/* 上半部分：圖片背景，圖片可調整偏移量和縮放 */}
       <div

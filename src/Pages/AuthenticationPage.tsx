@@ -3,11 +3,11 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 function AuthenticationPage() {
-  const [searchText, setSearchText] = useState(''); // 儲存搜尋文字
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [activeTab, setActiveTab] = useState('sign-in');
+  const [searchText, setSearchText] = useState(""); // 儲存搜尋文字
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [activeTab, setActiveTab] = useState("sign-in");
 
   // 當文字改變時更新 searchText
   const handleSearchChange = (text: string) => {
@@ -34,7 +34,7 @@ function AuthenticationPage() {
   };
 
   return (
-    <div className="flex flex-col item-center ">
+    <div className="flex flex-col item-center min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       <div className="flex flex-col min-h-min my-10">
         {/* 中間內容區域 */}
@@ -149,4 +149,4 @@ function AuthenticationPage() {
   );
 }
 
-export default AuthenticationPage
+export default AuthenticationPage;
