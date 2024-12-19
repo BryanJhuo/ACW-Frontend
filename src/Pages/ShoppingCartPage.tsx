@@ -70,7 +70,7 @@ const ShoppingCartPage = () => {
   }, [currentUserId]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
 
       <div className="w-full max-w-4xl mt-8">

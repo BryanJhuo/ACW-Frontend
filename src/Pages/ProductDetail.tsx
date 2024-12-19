@@ -13,7 +13,7 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
 
       <div className="flex flex-col lg:flex-row lg:items-start gap-8 p-8 w-full max-w-5xl ">
