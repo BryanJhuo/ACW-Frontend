@@ -56,7 +56,7 @@ const FrontPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/products?_limit=12");
+        const response = await fetch("http://localhost:3000/products?_limit=5");
         const data = await response.json();
         console.log(data);
 
@@ -165,26 +165,32 @@ const FrontPage = () => {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              image={product.image}
-              name={product.name}
-              description={product.description}
-              price={product.price}
-              tags={product.tags}
-              liked={product.liked}
-              toggleLiked={() => {
-                setProducts((prevProducts) =>
-                  prevProducts.map((p) =>
-                    p.id === product.id ? { ...p, liked: !p.liked } : p
-                  )
-                );
-              }}
-            />
-          ))}
+        <div className="relative overflow-x-auto">
+          <div className="flex gap-6">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="flex-shrink-0 w-1/4" // 確保每個商品占 1/4 寬度
+              >
+                <ProductCard
+                  id={product.id}
+                  image={product.image}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  tags={product.tags}
+                  liked={product.liked}
+                  toggleLiked={() => {
+                    setProducts((prevProducts) =>
+                      prevProducts.map((p) =>
+                        p.id === product.id ? { ...p, liked: !p.liked } : p
+                      )
+                    );
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 更多商品按鈕 */}
