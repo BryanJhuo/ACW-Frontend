@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductDetail from "./Pages/ProductDetail.tsx";
 import MemberCenter from "./Pages/MemberCenterPage.tsx";
 import CenterDetail from "./Pages/CenterDetailPage.tsx";
+import SalerPage from "./Pages/SalerPage.tsx";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
 
       {/* MemberCenterDetail route */}
       <Route path="/member/detail" Component={CenterDetail} />
+
+      {/* Saler route */}
+      <Route path="/saler" Component={SalerPage} />
     </Routes>
   );
 }
