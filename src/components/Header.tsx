@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
   return (
     <header className="w-full flex items-center py-6 px-4 lg:px-10 bg-white relative shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
       <a href="/" className="text-xl font-bold">
-        🅱️
+        <img src="/IconV1.png" alt="DBS" className="w-20 h-20" />
       </a>
 
       {/* 搜尋框置中 */}
