@@ -62,10 +62,6 @@ const MemberCenter: React.FC = () => {
           onClick={() => handleNavigate("/member/detail", "訂單狀態")}
         />
         <Button
-          text="預填訂購資料"
-          onClick={() => handleNavigate("/member/detail", "預填訂購資料")}
-        />
-        <Button
           text="喜好項目"
           onClick={() => handleNavigate("/member/detail", "喜好項目")}
         />
