@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import axios from "axios"; // 如果使用 axios
+import { useNavigate } from 'react-router-dom';
 
 function AuthenticationPage() {
   const [searchText, setSearchText] = useState(""); // 儲存搜尋文字
@@ -8,7 +10,8 @@ function AuthenticationPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [activeTab, setActiveTab] = useState("sign-in");
-
+  const [message, setMessage] = useState(""); // 儲存訊息
+  const navigate = useNavigate();
   // 當文字改變時更新 searchText
   const handleSearchChange = (text: string) => {
     setSearchText(text);
@@ -20,17 +23,92 @@ function AuthenticationPage() {
     else handleSignUp();
   };
 
-  const handleSignIn = () => {
-    // TODO : Handle sign-in logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
-  };
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/member/login", {
+        email,
+        password,
+      });
+      setMessage("登入成功！");
+      console.log("登入成功：", response.data); // 主控台顯示成功訊息
+      localStorage.setItem("authToken", response.data.token);
+      console.log("Token文存成功：", response.data.token); // 主控台顯示成功訊息
 
-  const handleSignUp = () => {
-    // TODO : Handle sign-up logic here
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+      navigate("/");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Axios 錯誤處理
+        if (error.response) {
+          switch (error.response.status) {
+            case 400:
+              setMessage("請求資料無效，請確認您的輸入格式是否正確！");
+              console.error("錯誤 400：", error.response.data);
+              break;
+            case 401:
+              setMessage("登入失敗，信箱或密碼錯誤！");
+              console.error("錯誤 401：", error.response.data);
+              break;
+            case 500:
+              setMessage("伺服器內部錯誤，請稍後再試！");
+              console.error("錯誤 500：", error.response.data);
+              break;
+            default:
+              setMessage("發生未知錯誤，請稍後再試！");
+              console.error(`錯誤 ${error.response.status}：`, error.response.data);
+              break;
+          }
+        } else if (error.request) {
+          setMessage("無法連接伺服器，請檢查您的網路連線！");
+          console.error("無法連接伺服器：", error.request);
+        } else {
+          setMessage("發生未知錯誤，請稍後再試！");
+          console.error("未知錯誤：", error.message);
+        }
+      } else {
+        // 非 Axios 錯誤
+        setMessage("發生未知錯誤，請稍後再試！");
+        console.error("非 Axios 錯誤：", error);
+      }
+    }
+  }
+
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/member/register", {
+        name,
+        email,
+        password,
+      });
+      setMessage("註冊成功！");
+      console.log("註冊成功：", response.data);  // 主控台顯示成功訊息
+    } catch (error) {
+      // 判斷錯誤類型
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // 伺服器回應錯誤，例如 400、409 或 500 等
+          console.error("註冊錯誤：", error.response.data);
+          if (error.response.status === 400) {
+            setMessage("請求資料格式錯誤，請檢查您的資料。");
+          } else if (error.response.status === 409) {
+            setMessage("用戶名已存在，請選擇其他帳號。");
+          } else {
+            setMessage("伺服器錯誤，請稍後再試。");
+          }
+        } else if (error.request) {
+          // 請求未發送的錯誤
+          console.error("未收到伺服器回應：", error.request);
+          setMessage("無法連接伺服器，請檢查網路或稍後再試。");
+        } else {
+          // 其他錯誤
+          console.error("錯誤：", error.message);
+          setMessage("註冊失敗，請稍後再試。");
+        }
+      } else {
+        // 非 Axios 錯誤
+        console.error("錯誤：", error);
+        setMessage("註冊失敗，請稍後再試。");
+      }
+    }
   };
 
   return (
@@ -102,6 +180,11 @@ function AuthenticationPage() {
                 {activeTab === "sign-in" ? "Sign In" : "Sign Up"}
               </button>
             </form>
+            {message && (
+              <div className="mt-4 text-center text-red-500">
+                {message}
+              </div>
+            )}
           </div>
 
           {/* Tab 切換按鈕，放置在表單下方並加上適當的間距 */}
@@ -110,11 +193,10 @@ function AuthenticationPage() {
               {/* Sign In Button */}
               <button
                 onClick={() => setActiveTab("sign-in")}
-                className={`relative flex items-center px-6 py-3 rounded-l-full border-r border-gray-400 ${
-                  activeTab === "sign-in"
+                className={`relative flex items-center px-6 py-3 rounded-l-full border-r border-gray-400 ${activeTab === "sign-in"
                     ? "bg-purple-100 text-black"
                     : "text-gray-500 bg-transparent"
-                }`}
+                  }`}
               >
                 {activeTab === "sign-in" && (
                   <span className="absolute left-2 text-purple-700 mx-1">
@@ -127,11 +209,10 @@ function AuthenticationPage() {
               {/* Sign Up Button */}
               <button
                 onClick={() => setActiveTab("sign-up")}
-                className={`relative flex items-center px-6 py-3 rounded-r-full ${
-                  activeTab === "sign-up"
+                className={`relative flex items-center px-6 py-3 rounded-r-full ${activeTab === "sign-up"
                     ? "bg-purple-100 text-black"
                     : "text-gray-500 bg-transparent"
-                }`}
+                  }`}
               >
                 {activeTab === "sign-up" && (
                   <span className="absolute left-2 text-purple-700 mx-1">
