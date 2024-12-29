@@ -1,107 +1,127 @@
 {
-    "products": [
-      {
-        "id": 1,
-        "price": 2999,
-        "image": "https://via.placeholder.com/150",
-        "name": "Apple iPhone 15 Pro",
-        "description": "最新款蘋果iPhone 15 Pro，搭載A17仿生晶片，超高效能，擁有一流的拍照和顯示效果。",
-        "remain": 100,
-        "build_time": "2024-11-01T08:00:00Z",
-        "vendor_id": 1
-      },
-      {
-        "id": 2,
-        "price": 2499,
-        "image": "https://via.placeholder.com/150",
-        "name": "Samsung Galaxy S23",
-        "description": "Samsung 最新旗艦手機，配備超高解析度顯示和創新的相機技術。",
-        "remain": 150,
-        "build_time": "2024-11-03T09:30:00Z",
-        "vendor_id": 2
-      },
-      {
-        "id": 3,
-        "price": 1999,
-        "image": "https://via.placeholder.com/150",
-        "name": "Google Pixel 8",
-        "description": "Google 最新推出的智能手機，具有先進的AI功能和拍照技術。",
-        "remain": 200,
-        "build_time": "2024-11-05T10:00:00Z",
-        "vendor_id": 3
-      },
-      {
-        "id": 4,
-        "price": 1599,
-        "image": "https://via.placeholder.com/150",
-        "name": "OnePlus 11",
-        "description": "OnePlus 11，搭載強大的Snapdragon 8 Gen 2處理器，提供流暢的使用體驗。",
-        "remain": 50,
-        "build_time": "2024-11-07T12:00:00Z",
-        "vendor_id": 1
-      },
-      {
-        "id": 5,
-        "price": 1499,
-        "image": "https://via.placeholder.com/150",
-        "name": "Xiaomi Mi 13",
-        "description": "Xiaomi Mi 13，配備最新的AMOLED顯示屏和快速充電技術，性價比極高。",
-        "remain": 300,
-        "build_time": "2024-11-09T13:15:00Z",
-        "vendor_id": 4
-      },
-      {
-        "id": 6,
-        "price": 299,
-        "image": "https://via.placeholder.com/150",
-        "name": "Sony WH-1000XM5",
-        "description": "Sony WH-1000XM5 無線耳機，擁有業界領先的主動噪聲取消技術。",
-        "remain": 50,
-        "build_time": "2024-10-28T14:00:00Z",
-        "vendor_id": 5
-      },
-      {
-        "id": 7,
-        "price": 1299,
-        "image": "https://via.placeholder.com/150",
-        "name": "Dell XPS 13",
-        "description": "Dell XPS 13 超輕薄筆記型電腦，配備第13代Intel處理器和高清顯示屏。",
-        "remain": 80,
-        "build_time": "2024-11-12T16:45:00Z",
-        "vendor_id": 6
-      },
-      {
-        "id": 8,
-        "price": 499,
-        "image": "https://via.placeholder.com/150",
-        "name": "Logitech MX Master 3S",
-        "description": "Logitech MX Master 3S 無線滑鼠，提供精準的控制和舒適的手感。",
-        "remain": 500,
-        "build_time": "2024-11-15T17:30:00Z",
-        "vendor_id": 7
-      },
-      {
-        "id": 9,
-        "price": 99,
-        "image": "https://via.placeholder.com/150",
-        "name": "Anker PowerCore 10000",
-        "description": "Anker PowerCore 10000行動電源，輕便且高效，適用於各種裝置。",
-        "remain": 1000,
-        "build_time": "2024-11-18T19:00:00Z",
-        "vendor_id": 8
-      },
-      {
-        "id": 10,
-        "price": 899,
-        "image": "https://via.placeholder.com/150",
-        "name": "Samsung 4K UHD TV",
-        "description": "Samsung 4K UHD 電視，搭載QLED技術，提供驚人的視覺效果。",
-        "remain": 60,
-        "build_time": "2024-11-20T20:30:00Z",
-        "vendor_id": 2
-      }
-    ],
-    "carts": [
+  "products": [
+    {
+      "id": 1,
+      "price": 3299,
+      "image": "https://via.placeholder.com/150",
+      "name": "Apple MacBook Air M2",
+      "description": "Apple MacBook Air 搭載 M2 晶片，輕薄設計，適合高效工作的筆記型電腦。",
+      "remain": 50,
+      "build_time": "2024-11-25T08:00:00Z",
+      "vendor_id": 1
+    },
+    {
+      "id": 2,
+      "price": 1299,
+      "image": "https://via.placeholder.com/150",
+      "name": "Google Nest Hub Max",
+      "description": "Google 智能家居設備，提供影音播放與家庭控制功能。",
+      "remain": 200,
+      "build_time": "2024-11-22T09:30:00Z",
+      "vendor_id": 2
+    },
+    {
+      "id": 3,
+      "price": 1799,
+      "image": "https://via.placeholder.com/150",
+      "name": "Samsung Galaxy Watch 6",
+      "description": "Samsung 最新智能手錶，具備健康監測與運動追蹤功能。",
+      "remain": 150,
+      "build_time": "2024-11-19T10:00:00Z",
+      "vendor_id": 3
+    },
+    {
+      "id": 4,
+      "price": 599,
+      "image": "https://via.placeholder.com/150",
+      "name": "Jabra Elite 7 Pro",
+      "description": "Jabra 真無線耳機，提供高清音質與長效電池續航。",
+      "remain": 300,
+      "build_time": "2024-11-17T12:00:00Z",
+      "vendor_id": 4
+    },
+    {
+      "id": 5,
+      "price": 199,
+      "image": "https://via.placeholder.com/150",
+      "name": "Amazon Echo Dot (5th Gen)",
+      "description": "Amazon 智能音箱，內建 Alexa 語音助理，適合智能家居控制。",
+      "remain": 500,
+      "build_time": "2024-11-15T13:15:00Z",
+      "vendor_id": 5
+    },
+    {
+      "id": 6,
+      "price": 2499,
+      "image": "https://via.placeholder.com/150",
+      "name": "Sony PlayStation 5",
+      "description": "次世代遊戲主機，帶來身歷其境的遊戲體驗。",
+      "remain": 80,
+      "build_time": "2024-11-12T14:00:00Z",
+      "vendor_id": 6
+    },
+    {
+      "id": 7,
+      "price": 1299,
+      "image": "https://via.placeholder.com/150",
+      "name": "LG UltraGear Gaming Monitor",
+      "description": "LG 27吋電競顯示器，具備快速響應時間與高刷新率。",
+      "remain": 100,
+      "build_time": "2024-11-09T16:45:00Z",
+      "vendor_id": 7
+    },
+    {
+      "id": 8,
+      "price": 89,
+      "image": "https://via.placeholder.com/150",
+      "name": "SanDisk Extreme 1TB SSD",
+      "description": "SanDisk 高速便攜式固態硬碟，適合隨身儲存大量資料。",
+      "remain": 300,
+      "build_time": "2024-11-07T17:30:00Z",
+      "vendor_id": 8
+    },
+    {
+      "id": 9,
+      "price": 699,
+      "image": "https://via.placeholder.com/150",
+      "name": "Razer BlackWidow V4 Pro",
+      "description": "Razer 機械鍵盤，專為電競玩家設計，具備 RGB 背光。",
+      "remain": 200,
+      "build_time": "2024-11-05T19:00:00Z",
+      "vendor_id": 1
+    },
+    {
+      "id": 10,
+      "price": 1099,
+      "image": "https://via.placeholder.com/150",
+      "name": "Dyson V12 Detect Slim",
+      "description": "Dyson 無線吸塵器，適合各類地板與地毯清潔。",
+      "remain": 150,
+      "build_time": "2024-11-03T20:30:00Z",
+      "vendor_id": 2
+    },
+    {
+      "id": 11,
+      "price": 249,
+      "image": "https://via.placeholder.com/150",
+      "name": "Philips Hue Smart Bulbs",
+      "description": "Philips 智能燈泡，支援多種顏色與智能控制。",
+      "remain": 500,
+      "build_time": "2024-11-01T08:00:00Z",
+      "vendor_id": 3
+    },
+    {
+      "id": 12,
+      "price": 399,
+      "image": "https://via.placeholder.com/150",
+      "name": "Bose SoundLink Revolve+",
+      "description": "Bose 高品質無線藍牙喇叭，提供環繞聲音效。",
+      "remain": 120,
+      "build_time": "2024-10-29T09:30:00Z",
+      "vendor_id": 4
+    }
+  ],
+  "carts": [
     {
       "member_id": 1,
       "product_id": 1,
@@ -139,5 +159,4 @@
       "count": 1
     }
   ]
-  }
-  
+}

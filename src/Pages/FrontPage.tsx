@@ -1,39 +1,73 @@
 import { useState, useEffect } from "react";
-import Header from "../components/Header"; // 引入 Header 元件
-import Footer from "../components/Footer"; // 引入 Footer 元件
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import ProductCard from "../components/ProductCard";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+// 宣告產品型別
+interface Product {
+  id: number;
+  image: string;
+  name: string;
+  description: string;
+  price: number;
+  tags: string[];
+  liked: boolean;
+}
 
 const FrontPage = () => {
-  const [searchText, setSearchText] = useState(""); // 儲存搜尋文字
+  const [searchText, setSearchText] = useState(""); // 搜尋文字
+  const [products, setProducts] = useState<Product[]>([]); // 儲存商品資料
 
-  // 當文字改變時更新 searchText
+  // 假設這是後端回傳的精選商品資料
+  const slides = [
+    {
+      src: "https://cms.cdn.91app.com/images/compress/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1732846378-60rkvqagil_m_1920x980.webp",
+      link: "https://example.com/page1",
+    },
+    {
+      src: "https://cms.cdn.91app.com/images/compress/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1733279402-6i5l1zorx8_m_1920x980.webp",
+      link: "https://example.com/page2",
+    },
+    {
+      src: "https://cms.cdn.91app.com/images/compress/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1699239031-gn4q60paoi_m_1920x980.webp",
+      link: "https://example.com/page3",
+    },
+    {
+      src: "https://cms.cdn.91app.com/images/original/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1656397804-pfdg8v35in_m_1200x613_800x408_400x204.jpg",
+      link: "https://example.com/page3",
+    },
+    {
+      src: "https://cms.cdn.91app.com/images/original/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1676623142-o5kvux8gaj_m_1200x613_800x408_400x204.jpg",
+      link: "https://example.com/page3",
+    }
+  ];
+
+  // 更新搜尋文字
   const handleSearchChange = (text: string) => {
     setSearchText(text);
   };
-  const [products, setProducts] = useState<Product[]>([]);
-  const [imageOffset] = useState({ x: 50, y: 50 }); // 記錄圖片的偏移量
-  const [imageScale] = useState(1); // 記錄圖片的縮放比例
 
-  // 假設這是後端回傳的精選商品資料
-  interface Product {
-    id: number;
-    image: string;
-    name: string;
-    description: string;
-  }
-
+  // 取得商品資料
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // 透過 API 請求並限制返回資料數量為 5
-        const response = await fetch("http://localhost:3001/products?_limit=5");
+        const response = await fetch("http://localhost:3000/products?_limit=5");
         const data = await response.json();
+        console.log(data);
 
-        // 資料清洗，保留 id, name, image, description
         const cleanedData = data.map((product: Product) => ({
           id: product.id,
           image: product.image,
           name: product.name,
           description: product.description,
+          price: product.price || 0, // 預設價格
+          tags: product.tags || [],   // 預設標籤為空陣列
+          liked: false,               // 預設為未收藏
         }));
 
         setProducts(cleanedData);
@@ -48,96 +82,129 @@ const FrontPage = () => {
   return (
     <div className="flex flex-col items-center min-h-screen">
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
-      {/* 上半部分：圖片背景，圖片可調整偏移量和縮放 */}
-      <div
-        className="w-full bg-gray-300 overflow-hidden relative" // overflow-hidden 用來裁切超出部分
-        style={{
-          height: "50vh", // 設定這裡的高度為你希望的比例 (50% 屏幕高度)
-        }}
-      >
-        <img
-          src="https://ikuma.cc/wp-content/uploads/flickr/50264978082_99d33410fd_c.jpg"
-          alt="Single Image"
-          style={{
-            position: "absolute",
-            top: "60%",
-            left: "50%",
-            transform: `translate(-50%, -50%) scale(${imageScale})`, // 讓圖片中心保持在容器中並縮放
-            width: "auto",
-            height: "160%",
-            objectFit: "contain", // 使用contain可以讓圖片縮放以完整顯示，並避免裁切
-            objectPosition: `${imageOffset.x}% ${imageOffset.y}%`, // 調整圖片的偏移量
-            transition: "transform 0.3s ease-in-out", // 平滑過渡效果
-          }}
-        />
-        {/* 左邊按鈕 */}
-        <button
-          className="absolute bottom-10 left-1/3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          style={{
-            position: "absolute",
-            bottom: "10%", // 距離底部的距離
-            left: "43%", // 稍微偏左
-          }}
-        >
-          左邊按鈕
-        </button>
 
-        {/* 右邊按鈕 */}
-        <button
-          className="absolute bottom-10 right-1/3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          style={{
-            position: "absolute",
-            bottom: "10%", // 距離底部的距離
-            right: "43%", // 稍微偏右
-          }}
-        >
-          右邊按鈕
-        </button>
-      </div>
-      {/* 下半部分：精選商品 */}
-      <div className="w-full max-w-4xl mt-8">
-        <h2 className="text-left text-xl font-bold mb-4">精選商品</h2>{" "}
-        {/* 改為 text-left */}
-        <div className="flex flex-col gap-6">
-          {" "}
-          {/* 改為 flex-col 垂直排列 */}
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg p-4 flex items-center gap-4 shadow-md" // 保持左右排列
-              style={{ minHeight: "150px" }} // 設定最小高度，讓區塊顯得比較長
-            >
-              {/* 商品圖片 */}
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        direction="horizontal"
+        navigation
+        pagination={{
+          clickable: true,
+          renderBullet: (_, className) =>
+            `<span class="${className} bg-gray-400 w-4 h-4 rounded-full mx-1 transition-transform transform scale-100"></span>`,
+        }}
+        autoplay={{ delay: 5000 }}
+        loop
+        className="w-5/6 h-1/1 swiper-custom"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <a href={slide.link} target="_blank" rel="noopener noreferrer">
               <img
-                src={product.image}
-                alt={product.name}
-                className="w-32 h-32 object-cover" // 圖片大小
+                src={slide.src}
+                alt={`Slide ${index + 1}`}
+                className="w-full h-full object-cover"
               />
-              {/* 右邊區塊：商品名稱、描述、按鈕 */}
-              <div className="flex flex-col justify-between h-full text-left">
-                <h3
-                  className="text-lg font-semibold mb-2"
-                  style={{ textDecoration: "underline" }}
-                >
-                  {product.name}
-                </h3>{" "}
-                {/* 加入底線 */}
-                <p className="text-gray-600 text-sm mb-4">
-                  {product.description}
-                </p>
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 "
-                  style={{ width: "100px" }}
-                >
-                  按鈕
-                </button>
+            </a>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* Custom Styles */}
+      <style>{`
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background-color: lightgray;
+    border: 2px solid white;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: blue !important;
+    transform: scale(1.5);
+    border: 3px solid white;
+    box-shadow: 0 0 10px blue, 0 0 20px blue;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    color: white;
+    font-size: 20px;
+  }
+`}</style>
+
+      {/* 精選商品 */}
+      <div className="w-full max-w-7xl mt-9">
+        <div className="flex justify-between items-center">
+          <h2 className="text-left text-2xl font-bold mb-4">精選商品</h2>
+          <a
+            href="/more-products" // 替換成實際的更多商品頁面路徑
+            className="text-blue-600 font-semibold hover:text-blue-800 flex items-center text-2xl"
+          >
+            更多商品
+            <span className="ml-2 text-3xl">{'>'}</span>
+          </a>
+        </div>
+
+        <div className="relative overflow-x-auto">
+          <div className="flex gap-6">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="flex-shrink-0 w-1/4" // 確保每個商品占 1/4 寬度
+              >
+                <ProductCard
+                  id={product.id}
+                  image={product.image}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  tags={product.tags}
+                  liked={product.liked}
+                  toggleLiked={() => {
+                    setProducts((prevProducts) =>
+                      prevProducts.map((p) =>
+                        p.id === product.id ? { ...p, liked: !p.liked } : p
+                      )
+                    );
+                  }}
+                />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* 更多商品按鈕 */}
+        <div className="flex justify-center mt-8">
+          <a
+            href="/more-products" // 替換成實際的更多商品頁面路徑
+            className="bg-blue-600 text-white py-3 px-8 rounded-full text-xl font-semibold hover:bg-blue-700 transition-all duration-300"
+          >
+            更多商品
+          </a>
         </div>
       </div>
-      {/* 在 Footer 之前加入額外的間距 */}
-      <div className="mb-8"></div> {/* 可以調整這裡的數值來增加間距 */}
+      <div className="mb-8"></div>
+      {/* Footer */}
       <Footer />
     </div>
   );

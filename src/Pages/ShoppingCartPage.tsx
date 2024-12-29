@@ -9,6 +9,7 @@ const ShoppingCartPage = () => {
   const handleSearchChange = (text: string) => {
     setSearchText(text);
   };
+
   // 購物車商品的資料格式
   interface CartItem {
     id: number;
@@ -16,6 +17,7 @@ const ShoppingCartPage = () => {
     name: string;
     description: string;
     price: number;
+    count: number;
   }
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -28,37 +30,35 @@ const ShoppingCartPage = () => {
       try {
         // 首先獲取購物車資料，過濾出屬於當前用戶的資料
         const cartResponse = await fetch(
-          `http://localhost:3001/carts?member_id=${currentUserId}`
+          `http://localhost:3000/carts?member_id=${currentUserId}`
         );
         const cartData = await cartResponse.json();
 
         // 獲取商品資料
-        const productResponse = await fetch("http://localhost:3001/products");
+        const productResponse = await fetch("http://localhost:3000/products");
         const productData = await productResponse.json();
 
         // 透過 cartData 中的 product_id 查詢對應商品資料
-        const combinedData = cartData.map(
-          (cartItem: { product_id: number; count: number }) => {
-            const product = productData.find(
-              (product: {
-                id: number;
-                image: string;
-                name: string;
-                description: string;
-                price: number;
-              }) => product.id === cartItem.product_id
-            );
+        const combinedData = cartData.map((cartItem: { product_id: number; count: number }) => {
+          const product = productData.find(
+            (product: { id: string; image: string; name: string; description: string; price: number }) =>
+              product.id === cartItem.product_id.toString()
+          );
 
-            return {
-              id: product.id,
-              image: product.image,
-              name: product.name,
-              description: product.description,
-              price: product.price,
-              count: cartItem.count,
-            };
+          if (!product) {
+            console.warn(`Product with ID ${cartItem.product_id} not found`);
+            return null;
           }
-        );
+
+          return {
+            id: product.id,
+            image: product.image,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            count: cartItem.count,
+          };
+        }).filter(Boolean);
 
         setCartItems(combinedData);
       } catch (error) {
@@ -68,6 +68,62 @@ const ShoppingCartPage = () => {
 
     fetchCartItems();
   }, [currentUserId]);
+
+  const handleQuantityChange = (id: number, newCount: number) => {
+    // 直接更新數量
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, count: newCount } : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (id: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) => {
+        if (item.id === id && item.count > 0) {
+          const newCount = item.count - 1;
+          // 如果減少後數量為0，顯示彈窗
+          if (newCount === 0) {
+            const confirmDelete = window.confirm(
+              "數量為 0，是否刪除此商品？"
+            );
+            if (confirmDelete) {
+              return { ...item, count: 0 };
+            } else {
+              // 如果取消刪除，將數量恢復為 1
+              return { ...item, count: 1 };
+            }
+          }
+          return { ...item, count: newCount };
+        }
+        return item;
+      })
+    );
+  };
+
+  const increaseQuantity = (id: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item
+      )
+    );
+  };
+
+  const handleBlur = (id: number, count: number) => {
+    if (count <= 0) {
+      const confirmDelete = window.confirm("數量為 0 或空，是否刪除此商品？");
+      if (confirmDelete) {
+        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      } else {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id ? { ...item, count: 1 } : item
+          )
+        );
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -99,17 +155,39 @@ const ShoppingCartPage = () => {
                   {item.name}
                 </h3>
                 <p className="text-gray-600 text-sm mb-2">{item.description}</p>
-                <button
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  style={{ width: "100px" }}
-                >
-                  移除
-                </button>
+
+                {/* 數量控制區域 */}
+                <div className="flex items-center gap-0">
+                  <button
+                    onClick={() => decreaseQuantity(item.id)} // 減少數量
+                    className="px-2 py-0.75 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={item.count}
+                    onChange={(e) => {
+                      const newCount = parseInt(e.target.value || "0", 10);
+                      handleQuantityChange(item.id, newCount); // 更新數量
+                    }}
+                    onBlur={() => handleBlur(item.id, item.count)} // 輸入完後進行檢查
+                    className="text-center border rounded-lg"
+                    size={Math.max(item.count.toString().length, 1)}
+                    style={{ maxWidth: "80px", minWidth: "40px" }}
+                  />
+                  <button
+                    onClick={() => increaseQuantity(item.id)} // 增加數量
+                    className="px-2 py-0.75 bg-gray-500 text-white rounded hover:bg-gray-600"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
               {/* 商品價格 */}
               <span className="text-gray-800 font-semibold ml-auto">
-                ${item.price}
+                ${item.price * item.count}
               </span>
             </div>
           ))}
@@ -118,10 +196,10 @@ const ShoppingCartPage = () => {
         {/* 總金額區域 */}
         <div className="mt-8 border-t pt-4 text-left">
           <h3 className="text-lg font-bold">
-            總金額: ${cartItems.reduce((total, item) => total + item.price, 0)}
+            總金額: ${cartItems.reduce((total, item) => total + item.price * item.count, 0)}
           </h3>
           <h4 className="text-md font-semibold mt-2">
-            總數量: {cartItems.length}
+            總數量: {cartItems.reduce((total, item) => total + item.count, 0)}
           </h4>
         </div>
 
