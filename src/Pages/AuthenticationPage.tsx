@@ -9,6 +9,7 @@ function AuthenticationPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [username, setNickname] = useState("");
   const [activeTab, setActiveTab] = useState("sign-in");
   const [message, setMessage] = useState(""); // 儲存訊息
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ function AuthenticationPage() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/member/login", {
-        email,
+      const response = await axios.post("http://localhost:8080/api/auth/login", {
+        username,
         password,
       });
       setMessage("登入成功！");
@@ -76,11 +77,13 @@ function AuthenticationPage() {
     try {
       const response = await axios.post("http://localhost:8080/api/member/register", {
         name,
+        username,
         email,
         password,
       });
       setMessage("註冊成功！");
       console.log("註冊成功：", response.data);  // 主控台顯示成功訊息
+      setActiveTab("sign-in"); // 註冊成功後切換到登入狀態
     } catch (error) {
       // 判斷錯誤類型
       if (axios.isAxiosError(error)) {
@@ -90,7 +93,9 @@ function AuthenticationPage() {
           if (error.response.status === 400) {
             setMessage("請求資料格式錯誤，請檢查您的資料。");
           } else if (error.response.status === 409) {
-            setMessage("用戶名已存在，請選擇其他帳號。");
+            setMessage("用戶名已存在");
+            setActiveTab("sign-in"); // 註冊成功後切換到登入狀態
+
           } else {
             setMessage("伺服器錯誤，請稍後再試。");
           }
@@ -124,39 +129,61 @@ function AuthenticationPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {activeTab === "sign-up" && (
-                <div className="fa fa-trash">
-                  <label
-                    htmlFor="name"
-                    className="block font-bold text-gray-700"
-                  >
-                    姓名：
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring"
-                  />
-                </div>
+                <>
+                  <div className="fa fa-trash">
+                    <label
+                      htmlFor="name"
+                      className="block font-bold text-gray-700"
+                    >
+                      姓名：
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring"
+                    />
+                  </div>
+                </>
               )}
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="nickname"
                   className="block font-bold text-gray-700"
                 >
-                  信箱：
+                  暱稱：
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  id="nickname"
+                  value={username}
+                  onChange={(e) => setNickname(e.target.value)}
                   required
                   className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring"
                 />
               </div>
+              {activeTab === "sign-up" && (
+                <>
+                  <div className="fa fa-trash">
+                    <label
+                      htmlFor="email"
+                      className="block font-bold text-gray-700"
+                    >
+                      信箱：
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring"
+                    />
+                  </div>
+                </>
+              )}
               <div>
                 <label
                   htmlFor="password"
@@ -194,8 +221,8 @@ function AuthenticationPage() {
               <button
                 onClick={() => setActiveTab("sign-in")}
                 className={`relative flex items-center px-6 py-3 rounded-l-full border-r border-gray-400 ${activeTab === "sign-in"
-                    ? "bg-purple-100 text-black"
-                    : "text-gray-500 bg-transparent"
+                  ? "bg-purple-100 text-black"
+                  : "text-gray-500 bg-transparent"
                   }`}
               >
                 {activeTab === "sign-in" && (
@@ -210,8 +237,8 @@ function AuthenticationPage() {
               <button
                 onClick={() => setActiveTab("sign-up")}
                 className={`relative flex items-center px-6 py-3 rounded-r-full ${activeTab === "sign-up"
-                    ? "bg-purple-100 text-black"
-                    : "text-gray-500 bg-transparent"
+                  ? "bg-purple-100 text-black"
+                  : "text-gray-500 bg-transparent"
                   }`}
               >
                 {activeTab === "sign-up" && (

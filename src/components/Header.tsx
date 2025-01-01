@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
   const token = localStorage.getItem("authToken");
 
   // 根據 token 決定按鈕顯示的內容
-  const memberLink = token ? "/profile" : "/auth"; // 如果有 token，跳轉到個人資料頁面，否則跳轉到登入頁面
+  const memberLink = token ? "/member" : "/auth"; // 如果有 token，跳轉到個人資料頁面，否則跳轉到登入頁面
   const memberText = token ? "Members" : "Login"; // 根據 token 顯示 "Members" 或 "Login"
   
   // 根據 token 決定 CART 按鈕的跳轉 URL

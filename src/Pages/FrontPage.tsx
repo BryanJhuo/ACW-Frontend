@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -53,22 +54,45 @@ const FrontPage = () => {
   };
 
   // 取得商品資料
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/products?_limit=5");
-        const data = await response.json();
-        console.log(data);
+        const response = await axios.get("http://localhost:8080/api/product/list?random=true");
+        const data = response.data;
 
-        const cleanedData = data.map((product: Product) => ({
+        const tagResponse = await axios.get("http://localhost:8080/api/tag/list");
+        const tagsData = tagResponse.data;
+
+        // 定義後端回傳的商品型別
+        interface ProductFromAPI {
+          id: number;
+          name: string;
+          description: string;
+          price?: number;
+          tags: number[];
+          image_url?: {
+            String: string;
+            Valid: boolean;
+          };
+        }
+
+        const tagDictionary = tagsData.reduce((acc: { [key: number]: string }, tag: { id: number, name: string }) => {
+          acc[tag.id] = tag.name;
+          return acc;
+        }, {});
+
+        const cleanedData = data.map((product: ProductFromAPI) => ({
           id: product.id,
-          image: product.image,
           name: product.name,
           description: product.description,
-          price: product.price || 0, // 預設價格
-          tags: product.tags || [],   // 預設標籤為空陣列
-          liked: false,               // 預設為未收藏
+          price: product.price || 0,
+          tags: product.tags.map((tagId: number) => tagDictionary[tagId] || `Tag ${tagId}`),
+          image: (product.image_url?.String || '') + ".png",  // 使用可選鏈運算子
+          liked: false,
+          toggleLiked: () => { },
         }));
+        console.log("註冊成功：", cleanedData);  // 主控台顯示成功訊息
 
         setProducts(cleanedData);
       } catch (error) {
@@ -170,7 +194,8 @@ const FrontPage = () => {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex-shrink-0 w-1/4" // 確保每個商品占 1/4 寬度
+                className="flex-shrink-0" // 移除w-1/4，這樣寬度不會依照父元素的比例來調整
+                style={{ width: '250px' }} // 設定固定寬度
               >
                 <ProductCard
                   id={product.id}
