@@ -1,43 +1,93 @@
-import React from "react";
-
-interface InputFieldProps {
-    label: string;
-    placeholder: string;
+import axios from "axios";
+import React, { useEffect } from "react";
+interface regionMap {
+    [city: string]: string[];
 }
 
-const InputField: React.FC<InputFieldProps> = ({
-    label,
-    placeholder,
-  }) => {
-    return (
-      <div className="flex flex-col mb-4">
-        <label className="text-gray-700 mb-1">{label}</label>
-        <input
-          type="text"
-          placeholder={placeholder}
-          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-purple-500"
-        />
-      </div>
+const getStaticData = async () => {
+  const response = await axios.get("http://localhost:8080/static/postal_codes.json");
+  return response.data;
+};
+
+const processData = (data: any) => {
+  const cities = Object.keys(data);
+  const region: {[city: string]: string[]} = {};
+
+  cities.forEach ((city) => {
+    const districts = data[city];
+    region[city] = Object.entries(districts).map(
+      ([district, zip]) => `${district}, ${zip}`
     );
-  };
+  });
+  return { keys: cities, values: region };
+};
+
 
 const ProfileForm: React.FC = () => {
     const imageSrc = "https://i.imgur.com/Xrebmu1.jpg";
+    const [city, setCity] = React.useState<string[]>([]);
+    const [region, setRegion] = React.useState<regionMap>({});
+    const [selectedCity, setSelectedCity] = React.useState<string>("");
+    const [districts, setDistricts] = React.useState<string[]>([]);
+
+    const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const cityName = event.target.value;
+        setSelectedCity(cityName);
+        setDistricts(region[cityName] || []);
+    };
+
+    useEffect(() => { 
+        getStaticData().then((data) => {
+            const { keys, values } = processData(data);
+            setCity(keys);
+            setRegion(values);
+        });
+    });
+
     return (
         <div className="max-w-md mx-auto bg-purple-50 p-8 rounded-md ">
       <div className="flex justify-center mb-6">
         <img src={imageSrc} alt="Avatar" className="w-24 h-24 rounded-full" />
       </div>
       {/*TODO: call API預先將 Name 和 Email填入 Placeholder 中 */}
-      <InputField label="姓名" placeholder="姓名" />
-      <InputField label="信箱" placeholder="信箱" />
+      <div className="flex flex-col mb-4">
+        <label className="text-gray-700 mb-1">姓名</label> 
+        <input
+          type="text"
+          placeholder="姓名"
+          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-purple-500"
+        />
+      </div>
+      <div className="flex flex-col mb-4">
+        <label className="text-gray-700 mb-1">信箱</label> 
+        <input
+          type="text"
+          placeholder="信箱"
+          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-purple-500"
+        />
+      </div>
+      
       <div className="flex flex-col mb-4">
         <label className="text-gray-700 mb-1">地址</label>
-        <select className="border border-gray-300 rounded-md p-2 mb-2">
+        <select
+          className="border border-gray-300 rounded-md p-2 mb-2"
+          value={selectedCity}
+          onChange={handleCityChange}
+        >
           <option>請選擇城市</option>
+          {city.map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
+            </option>
+          ))}
         </select>
         <select className="border border-gray-300 rounded-md p-2 mb-2">
           <option>請選擇地區</option>
+          {districts.map((district) => (
+            <option key={district} value={district}>
+              {district}
+            </option>
+          ))}
         </select>
         <input
           type="text"
