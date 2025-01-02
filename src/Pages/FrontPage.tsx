@@ -88,7 +88,7 @@ const FrontPage = () => {
           description: product.description,
           price: product.price || 0,
           tags: product.tags.map((tagId: number) => tagDictionary[tagId] || `Tag ${tagId}`),
-          image: (product.image_url?.String || '') + ".png",  // 使用可選鏈運算子
+          image: (product.image_url?.String || ''),  // 使用可選鏈運算子
           liked: false,
           toggleLiked: () => { },
         }));
@@ -181,7 +181,7 @@ const FrontPage = () => {
         <div className="flex justify-between items-center">
           <h2 className="text-left text-2xl font-bold mb-4">精選商品</h2>
           <a
-            href="/more-products" // 替換成實際的更多商品頁面路徑
+            href="/shop" // 替換成實際的更多商品頁面路徑
             className="text-blue-600 font-semibold hover:text-blue-800 flex items-center text-2xl"
           >
             更多商品
@@ -221,7 +221,7 @@ const FrontPage = () => {
         {/* 更多商品按鈕 */}
         <div className="flex justify-center mt-8">
           <a
-            href="/more-products" // 替換成實際的更多商品頁面路徑
+            href="/shop" // 替換成實際的更多商品頁面路徑
             className="bg-blue-600 text-white py-3 px-8 rounded-full text-xl font-semibold hover:bg-blue-700 transition-all duration-300"
           >
             更多商品
