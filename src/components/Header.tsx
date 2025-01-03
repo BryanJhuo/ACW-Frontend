@@ -11,6 +11,16 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
     onSearchChange(""); // 清空搜尋文字
   };
 
+  // 檢查 localStorage 中是否有 token
+  const token = localStorage.getItem("authToken");
+
+  // 根據 token 決定按鈕顯示的內容
+  const memberLink = token ? "/member" : "/auth"; // 如果有 token，跳轉到個人資料頁面，否則跳轉到登入頁面
+  const memberText = token ? "Members" : "Login"; // 根據 token 顯示 "Members" 或 "Login"
+  
+  // 根據 token 決定 CART 按鈕的跳轉 URL
+  const cartLink = token ? "/cart" : "/auth"; // 如果有 token，跳轉到購物車頁面，否則跳轉到登入頁面
+
   return (
     <header className="w-full flex items-center py-6 px-4 lg:px-10 bg-white relative shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
       <a href="/" className="text-xl font-bold">
@@ -44,13 +54,13 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
           Shop
         </a>
         <a
-          href="/auth"
+          href={memberLink} // 根據 token 決定跳轉的 URL
           className="px-3 py-1 lg:px-10 lg:py-1 border-3 border-gray-700 rounded-xl text-sm lg:text-base"
         >
-          Members
+          {memberText} {/* 顯示 "Members" 或 "Login" */}
         </a>
         <a
-          href="/cart"
+          href={cartLink} // 根據 token 決定跳轉的 URL
           className="px-3 py-1 lg:px-10 lg:py-1 border-2 border-gray-700 rounded-xl text-sm lg:text-base"
         >
           Cart
