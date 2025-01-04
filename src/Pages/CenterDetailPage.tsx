@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import ProfileForm from "../components/ProfileForm";
 import OrderForm from "../components/OrderForm";
+import Favorites from "../components/Favorites";
 interface TabProps {
   activeTab: string;
   onChange: (tab: string) => void;
@@ -17,11 +18,10 @@ const Tabs: React.FC<TabProps> = ({ activeTab, onChange }) => {
         <button
           key={tab}
           onClick={() => onChange(tab)}
-          className={`pb-2 px-2 ${
-            activeTab === tab
+          className={`pb-2 px-2 ${activeTab === tab
               ? "text-purple-600 border-b-2 border-purple-600"
               : "hover:text-purple-400"
-          }`}
+            }`}
         >
           {tab}
         </button>
@@ -45,10 +45,11 @@ const CenterDetail: React.FC = () => {
       {/* 頁首 */}
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       <div className="bg-purple-50 flex flex-col items-center my-10 px-36">
-        <div className="w-full max-w-4xl mt-10 ">
+        <div className="w-full max-w-4xl mt-10 p-6 mb-10"> {/* 增加內間距和下邊距 */}
           <Tabs activeTab={activeTab} onChange={setActiveTab} />
-          {activeTab === "個人資料" && <ProfileForm />} 
+          {activeTab === "個人資料" && <ProfileForm />}
           {activeTab === "訂單狀態" && <OrderForm />}
+          {activeTab === "喜好項目" && <Favorites />}
         </div>
       </div>
       {/* 頁尾 */}

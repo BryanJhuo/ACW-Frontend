@@ -57,7 +57,6 @@ const getProductDetail = async () => {
     const response = await axios.get("http://localhost:8080/api/product/list", {
       params: {
         id: 10,
-        vendor_id: "3",
         random: false,
       },
     });
