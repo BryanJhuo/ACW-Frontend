@@ -20,7 +20,8 @@ function ShopPage() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/product/list")
-        const data = response.data
+        let data = response.data
+        data = data.filter((item: any) => item.disability === false)
 
         const tagResponse = await axios.get("http://localhost:8080/api/tag/list")
         const tagsData = tagResponse.data
