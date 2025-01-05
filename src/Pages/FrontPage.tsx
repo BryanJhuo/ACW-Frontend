@@ -23,7 +23,7 @@ interface Product {
 const FrontPage = () => {
   const [searchText, setSearchText] = useState(""); // 搜尋文字
   const [products, setProducts] = useState<Product[]>([]); // 儲存商品資料
-
+  const token = localStorage.getItem("authToken");
   // 假設這是後端回傳的精選商品資料
   const slides = [
     {
@@ -48,10 +48,6 @@ const FrontPage = () => {
     }
   ];
 
-  // 更新搜尋文字
-  const handleSearchChange = (text: string) => {
-    setSearchText(text);
-  };
 
   // 取得商品資料
 
@@ -90,23 +86,91 @@ const FrontPage = () => {
           tags: product.tags.map((tagId: number) => tagDictionary[tagId] || `Tag ${tagId}`),
           image: (product.image_url?.String || ''),  // 使用可選鏈運算子
           liked: false,
-          toggleLiked: () => { },
         }));
-        console.log("註冊成功：", cleanedData);  // 主控台顯示成功訊息
 
-        setProducts(cleanedData);
+        if (!token) return;
+
+        const likedResponse = await axios.get("http://localhost:8080/api/favorite/list", {
+          headers: { Authorization: `${token}` }
+        });
+        const likedData = likedResponse.data;
+
+        const updatedData = cleanedData.map((item: Product) => ({
+          ...item,
+          liked: likedData === null ? false : likedData.some((likedItem: { id: number }) => likedItem.id === item.id),
+        }));
+        setProducts(updatedData);
       } catch (error) {
         console.error("Failed to fetch products:", error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [token]);
+
+  const handleLike = async (productId: number) => {
+    if (!token) {
+      alert("請先登入");
+      window.location.href = "/auth";
+      return;
+    }
+
+    try {
+      await axios.post(
+        `http://localhost:8080/api/favorite/add?product_id=${productId}`,
+        {},
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === productId ? { ...product, liked: !product.liked } : product
+        )
+      );
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 401) {
+          localStorage.removeItem("authToken"); // 刪除 token
+          window.location.href = "/auth"; // 跳轉到登入頁面
+          return;
+        }
+        if (err.response.data.error === "Product is already in favorite") {
+          try {
+            await axios.delete(
+              `http://localhost:8080/api/favorite/delete?product_id=${productId}`,
+              {
+                headers: {
+                  Authorization: `${token}`,
+                },
+              }
+            );
+            setProducts((prevProducts) =>
+              prevProducts.map((product) =>
+                product.id === productId ? { ...product, liked: !product.liked } : product
+              )
+            );
+          } catch (deleteErr) {
+            if (axios.isAxiosError(deleteErr) && deleteErr.response) {
+              alert(`刪除錯誤: ${deleteErr.response.data.error}`);
+            } else {
+              alert("刪除錯誤: 未知錯誤");
+            }
+          }
+        } else {
+          alert(`錯誤: ${err.response.data.error}`);
+        }
+      } else {
+        alert("網絡錯誤，請稍後再試");
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col items-center min-h-screen">
-      <Header searchText={searchText} onSearchChange={handleSearchChange} />
-
+      <Header searchText={searchText} onSearchChange={setSearchText} />
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         direction="horizontal"
@@ -135,46 +199,46 @@ const FrontPage = () => {
 
       {/* Custom Styles */}
       <style>{`
-  .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
-    background-color: lightgray;
-    border: 2px solid white;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-  }
+        .swiper-pagination-bullet {
+          width: 12px;
+          height: 12px;
+          background-color: lightgray;
+          border: 2px solid white;
+          opacity: 0.8;
+          transition: all 0.3s ease;
+        }
 
-  .swiper-pagination-bullet-active {
-    background-color: blue !important;
-    transform: scale(1.5);
-    border: 3px solid white;
-    box-shadow: 0 0 10px blue, 0 0 20px blue;
-    transition: all 0.3s ease;
-  }
+        .swiper-pagination-bullet-active {
+          background-color: blue !important;
+          transform: scale(1.5);
+          border: 3px solid white;
+          box-shadow: 0 0 10px blue, 0 0 20px blue;
+          transition: all 0.3s ease;
+        }
 
-  .swiper-button-next,
-  .swiper-button-prev {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background 0.3s ease;
-  }
+        .swiper-button-next,
+        .swiper-button-prev {
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: background 0.3s ease;
+        }
 
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    background: rgba(0, 0, 0, 0.8);
-  }
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+          background: rgba(0, 0, 0, 0.8);
+        }
 
-  .swiper-button-next::after,
-  .swiper-button-prev::after {
-    color: white;
-    font-size: 20px;
-  }
-`}</style>
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+          color: white;
+          font-size: 20px;
+        }
+      `}</style>
 
       {/* 精選商品 */}
       <div className="w-full max-w-7xl mt-9">
@@ -205,13 +269,7 @@ const FrontPage = () => {
                   price={product.price}
                   tags={product.tags}
                   liked={product.liked}
-                  toggleLiked={() => {
-                    setProducts((prevProducts) =>
-                      prevProducts.map((p) =>
-                        p.id === product.id ? { ...p, liked: !p.liked } : p
-                      )
-                    );
-                  }}
+                  toggleLiked={() => handleLike(product.id)}
                 />
               </div>
             ))}

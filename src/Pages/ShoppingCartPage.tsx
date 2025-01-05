@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -17,8 +17,8 @@ interface CartItem {
 const ShoppingCartPage = () => {
   const [searchText, setSearchText] = useState(""); // 儲存搜尋文字
   const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
-
   const token = localStorage.getItem("authToken");
+  const navigate = useNavigate(); // 使用 useNavigate 來進行跳轉
 
   // 當文字改變時更新 searchText
   const handleSearchChange = (text: string) => {
@@ -29,6 +29,7 @@ const ShoppingCartPage = () => {
     const fetchCartItems = async () => {
       if (!token) {
         console.error("No auth token found");
+        navigate("/auth"); // 跳轉到登入頁面
         return;
       }
 
@@ -53,6 +54,8 @@ const ShoppingCartPage = () => {
       } catch (error) {
         if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
           console.error("Unauthorized access. Please log in.");
+          localStorage.removeItem("authToken"); // 刪除 token
+          navigate("/auth"); // 跳轉到登入頁面
         } else {
           console.error("Failed to fetch cart items:", error);
         }
@@ -60,11 +63,12 @@ const ShoppingCartPage = () => {
     };
 
     fetchCartItems();
-  }, [token]);
+  }, [token, navigate]);
 
   const updateCart = async (productID: number, count: number) => {
     if (!token) {
       console.error("No auth token found");
+      navigate("/auth"); // 跳轉到登入頁面
       return;
     }
 
@@ -82,7 +86,13 @@ const ShoppingCartPage = () => {
       if (response.ok) {
         console.log('購物車更新成功:', data.message); // 顯示成功訊息
       } else {
-        console.log('錯誤:', data.error); // 顯示錯誤訊息
+        if (response.status === 401) {
+          console.error("Unauthorized access. Please log in.");
+          localStorage.removeItem("authToken"); // 刪除 token
+          navigate("/auth"); // 跳轉到登入頁面
+        } else {
+          console.log('錯誤:', data.error); // 顯示錯誤訊息
+        }
       }
     } catch (error) {
       console.error('發生錯誤:', error); // 顯示網路錯誤或其他錯誤
@@ -105,6 +115,8 @@ const ShoppingCartPage = () => {
           console.error("刪除商品失敗: 商品不在購物車中");
         } else if (response.status === 401) {
           console.error("刪除商品失敗: 未授權");
+          localStorage.removeItem("authToken"); // 刪除 token
+          navigate("/auth"); // 跳轉到登入頁面
         } else if (response.status === 500) {
           console.error("刪除商品失敗: 伺服器錯誤");
         } else {
@@ -118,7 +130,6 @@ const ShoppingCartPage = () => {
       console.error("刪除商品時發生錯誤:", error);
     }
   };
-
 
   const handleQuantityChange = (id: number, newCount: number) => {
     // 直接更新數量
@@ -202,20 +213,24 @@ const ShoppingCartPage = () => {
                 style={{ minHeight: "150px" }}
               >
                 {/* 商品圖片 */}
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-32 h-32 object-cover"
-                />
+                <Link to={`/product/${item.id}`}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-32 h-32 object-cover"
+                  />
+                </Link>
 
                 {/* 商品資訊 */}
                 <div className="flex flex-col justify-between h-full">
-                  <h3
-                    className="text-lg font-semibold mb-2"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    {item.name}
-                  </h3>
+                  <Link to={`/product/${item.id}`}>
+                    <h3
+                      className="text-lg font-semibold mb-2"
+                      style={{ textDecoration: "underline" }}
+                    >
+                      {item.name}
+                    </h3>
+                  </Link>
                   <p className="text-gray-600 text-sm mb-2">{item.description}</p>
 
                   {/* 數量控制區域 */}
@@ -274,9 +289,9 @@ const ShoppingCartPage = () => {
             繼續購物
           </Link>
           {cartItems && cartItems.length > 0 && (
-            <button className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <Link to="/order" className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600">
               去結帳
-            </button>
+            </Link>
           )}
         </div>
       </div>
