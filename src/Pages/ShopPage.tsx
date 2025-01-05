@@ -5,8 +5,10 @@ import ProductGrid from "../components/ProductGrid"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import axios from 'axios'
+import { useLocation } from "react-router-dom"
 
 function ShopPage() {
+  const location = useLocation();
   const [searchText, setSearchText] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [items, setItems] = useState([])
@@ -17,6 +19,9 @@ function ShopPage() {
   const [disabledTags, setDisabledTags] = useState<number[]>([])
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const search = params.get("search") || ""
+    setSearchText(search)
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/product/list")
@@ -52,7 +57,7 @@ function ShopPage() {
           {}
         )
 
-        const cleanedData = data.map((product: ProductFromAPI) => ({
+        let cleanedData = data.map((product: ProductFromAPI) => ({
           id: product.id,
           name: product.name,
           description: product.description,
@@ -73,11 +78,15 @@ function ShopPage() {
           type: tag.type,
         }))
 
+        if (search) {
+          cleanedData = cleanedData.filter((item: any) => item.name.includes(search))
+        }
+
         setItems(cleanedData)
         setFilteredItems(cleanedData)
         setTags(cleanedTag)
         setTotalPages(Math.ceil(cleanedData.length / 6))
-        setCurrentPage(1)
+        setCurrentPage(cleanedData.length === 0 ? 0 : 1)
         setPriceRange([0, Math.max(...cleanedData.map((item: any) => item.price))])
 
         const token = localStorage.getItem("authToken")
