@@ -249,7 +249,7 @@ const ShoppingCartPage = () => {
                         handleQuantityChange(item.id, newCount); // 更新數量
                       }}
                       onBlur={(e) => handleBlur(item.id, parseInt(e.target.value || "0", 10))} // 輸入完後進行檢查
-                      className="text-center border rounded-lg"
+                      className="text-center border rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       size={Math.max(item.count.toString().length, 1)}
                       style={{ maxWidth: "80px", minWidth: "40px" }}
                     />

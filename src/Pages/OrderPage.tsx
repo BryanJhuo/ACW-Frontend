@@ -257,8 +257,14 @@ const OrderPage: React.FC = () => {
               localStorage.removeItem('authToken');
               window
             }
-            if (data.error === 'Cart is empty') {
+            else if (data.error === 'Cart is empty') {
               alert('購物車是空的，請先加入商品');
+            }
+            else if (data.error === 'Not enough stock') {
+              alert('庫存不足');
+            }
+            else {
+              alert('訂單提交失敗');
             }
           }
         }
@@ -271,7 +277,7 @@ const OrderPage: React.FC = () => {
   return (
     <>
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
-      <div className="max-w-2xl mx-auto p-6 min-h-min">
+      <div className="max-w-4xl mx-auto p-6 min-h-min">
         {/* Step Progress Indicator */}
         <div className="flex items-center justify-around mb-6">
           {[1, 2, 3].map((step) => (
