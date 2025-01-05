@@ -21,7 +21,7 @@ function App() {
       <Route path="/cart" Component={ShoppingCart} />
 
       {/* ProductDetail route */}
-      <Route path="/product" Component={ProductDetail} />
+      <Route path="/product/:id" Component={ProductDetail} />
 
       {/* Shop route */}
       <Route path="/shop" Component={ShopPage} />
