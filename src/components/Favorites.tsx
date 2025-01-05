@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import 'animate.css';
 
 interface FavoriteProduct {
@@ -20,11 +20,14 @@ const Favorites: React.FC = () => {
   const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
 
   const token = localStorage.getItem("authToken");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!token) {
         setError("未授權，請登入後重試。");
+        localStorage.removeItem("authToken"); // 刪除 token
+        navigate("/auth"); // 跳轉到登入頁面
         setLoading(false);
         return;
       }
@@ -48,12 +51,14 @@ const Favorites: React.FC = () => {
       } catch (err: unknown) {
         console.error("Error fetching favorite products:", err);
         if (axios.isAxiosError(err) && err.response) {
+          if (err.response.status === 401) {
+            localStorage.removeItem("authToken"); // 刪除 token
+            navigate("/auth"); // 跳轉到登入頁面
+            return;
+          }
           switch (err.response.status) {
             case 400:
               setError("請求無效，請稍後再試。");
-              break;
-            case 401:
-              setError("未授權，請登入後重試。");
               break;
             case 500:
               setError("伺服器錯誤，請稍後再試。");
@@ -71,7 +76,7 @@ const Favorites: React.FC = () => {
     };
 
     fetchFavorites();
-  }, [token]);
+  }, [token, navigate]);
 
   const deleteFavorite = async (productId: number) => {
     if (!token) {
@@ -90,7 +95,7 @@ const Favorites: React.FC = () => {
         `http://localhost:8080/api/favorite/delete?product_id=${productId}`,
         {
           headers: {
-            Authorization: `${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -99,6 +104,11 @@ const Favorites: React.FC = () => {
       setTimeout(() => setDeleteSuccess(false), 2000); // 2秒後隱藏成功訊息
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
+        if (err.response.status === 401) {
+          localStorage.removeItem("authToken"); // 刪除 token
+          navigate("/auth"); // 跳轉到登入頁面
+          return;
+        }
         setDeleteError(`錯誤: ${err.response.data.error}`);
       } else {
         setDeleteError("網絡錯誤，請稍後再試");
@@ -138,7 +148,7 @@ const Favorites: React.FC = () => {
           {favorites.map((product) => (
             <div
               key={product.id}
-              className="border p-2 bg- shadow-md  rounded-md hover:shadow-lg transition-shadow mb-4 animate__animated animate__zoomIn flex items-center space-x-4 min-w-[800px] h-24"
+              className="border p-2 bg-white shadow-md hover:shadow-lg transition-shadow mb-4 animate__animated animate__zoomIn flex items-center space-x-4 min-w-[800px] h-24 rounded-md"
             >
               <Link to={`/product/${product.id}`}>
                 <img
@@ -151,7 +161,7 @@ const Favorites: React.FC = () => {
                 <Link to={`/product/${product.id}`}>
                   <h3 className="text-lg font-semibold text-gray-800 hover:text-purple-600 transition-colors duration-300">{product.name}</h3>
                 </Link>
-                <p className="text-gray-600 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-md ">
+                <p className="text-gray-600 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-md">
                   {product.description}
                 </p>
                 <p className="text-purple-600 font-bold">
