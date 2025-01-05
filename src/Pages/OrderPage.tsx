@@ -111,6 +111,17 @@ const OrderPage: React.FC = () => {
 
     if (name === 'shipment_method') {
       setShipmentMethod(parseInt(value));
+      if (parseInt(value) === 0) {
+        setSelectedCity('');
+        setSelectedDistrict('');
+        setAddress('');
+      }
+      if (parseInt(value) === 1) {
+        setSelectedStoreCity('');
+        setSelectedStoreDistrict('');
+        setSelectedStore('');
+      }
+      setFormData((prev) => ({ ...prev, address: '' }));
     }
 
     setFormData((prev) => ({ ...prev, [name]: (name === 'payment_method' || name === 'shipment_method') ? parseInt(value) : value }));
@@ -223,7 +234,6 @@ const OrderPage: React.FC = () => {
           alert('請填寫信用卡資訊');
           return;
         }
-        alert('信用卡已付款成功');
       }
 
       console.log(formData);
