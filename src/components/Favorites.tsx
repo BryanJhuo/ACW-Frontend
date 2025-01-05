@@ -95,7 +95,7 @@ const Favorites: React.FC = () => {
         `http://localhost:8080/api/favorite/delete?product_id=${productId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         }
       );
