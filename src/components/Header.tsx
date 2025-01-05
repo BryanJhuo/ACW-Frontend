@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
   // 根據 token 決定按鈕顯示的內容
   const memberLink = token ? "/member" : "/auth"; // 如果有 token，跳轉到個人資料頁面，否則跳轉到登入頁面
   const memberText = token ? "Members" : "Login"; // 根據 token 顯示 "Members" 或 "Login"
-  
+
   // 根據 token 決定 CART 按鈕的跳轉 URL
   const cartLink = token ? "/cart" : "/auth"; // 如果有 token，跳轉到購物車頁面，否則跳轉到登入頁面
 
@@ -32,21 +32,31 @@ const Header: React.FC<HeaderProps> = ({ searchText, onSearchChange }) => {
 
       {/* 搜尋框置中 */}
       <div className="absolute left-1/2 transform -translate-x-1/2 w-96 max-w-[40%] px-4 flex items-center">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchText} // 由父元件控制的搜尋文字
-          onChange={(e) => onSearchChange(e.target.value)} // 更新父元件的搜尋文字
-          className="border-2 border-gray-300 rounded-full w-full px-4 py-1 outline-none font-bold text-sm shadow-sm placeholder-gray-500 pr-8"
-        />
-        {/* 只有當有搜尋文字時才顯示叉叉圖示 */}
-        {searchText && (
-          <AiOutlineClose
-            onClick={clearSearch} // 點擊叉叉清空搜尋框
-            className="absolute right-6 text-gray-600 cursor-pointer"
-          />
-        )}
-      </div>
+  <div className="relative w-full">
+    <input
+      type="text"
+      placeholder="Search..."
+      value={searchText} // 由父元件控制的搜尋文字
+      onChange={(e) => onSearchChange(e.target.value)} // 更新父元件的搜尋文字
+      className="border-2 border-gray-300 rounded-full w-full px-4 py-1 outline-none font-bold text-sm shadow-sm placeholder-gray-500 pr-8"
+    />
+    {/* 只有當有搜尋文字時才顯示叉叉圖示 */}
+    {searchText && (
+      <AiOutlineClose
+        onClick={clearSearch} // 點擊叉叉清空搜尋框
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"
+      />
+    )}
+  </div>
+  <button
+    onClick={() =>
+      window.location.href = `/shop?search=${encodeURIComponent(searchText)}`
+    }
+    className="ml-2 px-3 py-1 border-2 border-gray-600 rounded-full text-sm"
+  >
+    Search
+  </button>
+</div>
 
       {/* 右側功能按鈕 */}
       <div className="flex items-center space-x-2 lg:space-x-4 ml-auto">
