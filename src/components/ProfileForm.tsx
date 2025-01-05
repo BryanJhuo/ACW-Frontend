@@ -140,7 +140,7 @@ const ProfileForm: React.FC = () => {
         setRegion(values);
       });
 
-  },);
+  }, []);
 
   return (
     <div className="max-w-md mx-auto bg-purple-50 p-8 rounded-md ">
