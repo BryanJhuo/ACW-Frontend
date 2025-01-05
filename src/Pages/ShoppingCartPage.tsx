@@ -289,9 +289,9 @@ const ShoppingCartPage = () => {
             繼續購物
           </Link>
           {cartItems && cartItems.length > 0 && (
-            <button className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <Link to="/order" className="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600">
               去結帳
-            </button>
+            </Link>
           )}
         </div>
       </div>
