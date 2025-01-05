@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import NewProductForm from "../components/NewProductForm";
 import Footer from "../components/Footer";
+import InventoryManagementForm from "../components/InventoryManagementForm";
 
 interface TabProps {
   activeTab: string;
@@ -42,7 +43,7 @@ const SalerPage: React.FC = () => {
       <Tabs activeTab={activeTab} onChange={setActiveTab} />
       <div className="mt-4">
         {activeTab === "新增商品" && <NewProductForm />}
-        {activeTab === "庫存管理" && <div>庫存管理</div>}
+        {activeTab === "庫存管理" && <InventoryManagementForm />}
       </div>
       <Footer />
     </div>

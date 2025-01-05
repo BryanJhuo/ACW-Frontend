@@ -255,7 +255,8 @@ const OrderPage: React.FC = () => {
             if (data.error === 'Invalid token') {
               alert('登入逾期，請重新登入');
               localStorage.removeItem('authToken');
-              window
+              localStorage.removeItem('role');
+              window.location.href = '/auth';
             }
             else if (data.error === 'Cart is empty') {
               alert('購物車是空的，請先加入商品');

@@ -114,7 +114,7 @@ const NewProductForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 p-6 border rounded-md shadow-md max-w-xl mx-auto mt-6">
+    <div className="bg-gray-100 p-6 border rounded-md shadow-md max-w-xl mx-auto my-6">
       <h2 className="text-lg font-bold text-center mb-4">基本資訊
         <span className="text-red-500 text-xs">*必填</span>
       </h2>

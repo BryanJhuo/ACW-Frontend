@@ -34,8 +34,11 @@ function AuthenticationPage() {
       console.log("登入成功：", response.data); // 主控台顯示成功訊息
       localStorage.setItem("authToken", response.data.token);
       console.log("Token文存成功：", response.data.token); // 主控台顯示成功訊息
-
-      navigate("/");
+      localStorage.setItem("role", response.data.role);
+      if (response.data.role === "vendor")
+        navigate("/saler");
+      else
+        navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // Axios 錯誤處理

@@ -18,11 +18,10 @@ const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       className={`w-full py-2 rounded-full text-lg font-semibold
-            ${
-              isPrimary
-                ? "bg-black text-white"
-                : "border-2 border-gray-300 text-gray-700"
-            }
+            ${isPrimary
+          ? "bg-black text-white"
+          : "border-2 border-gray-300 text-gray-700"
+        }
             hover:opacity-80 transition`}
     >
       {text}
@@ -38,9 +37,12 @@ const MemberCenter: React.FC = () => {
     setSearchText(text);
   };
 
+  const role = localStorage.getItem("role");
+
   const handleLogout = () => {
     console.log("登出");
     localStorage.removeItem("authToken");
+    localStorage.removeItem("role");
     alert("登出成功，即將返回首頁");
     navigate("/");
   };
@@ -51,23 +53,27 @@ const MemberCenter: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+
       {/* 頁首 */}
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       {/* 內容 */}
       <div className="w-full max-w-xs mx-auto my-20 space-y-4">
         <h1 className="text-3xl font-bold text-center">會員中心</h1>
-        <Button
-          text="個人資料"
-          onClick={() => handleNavigate("/member/detail", "個人資料")}
-        />
-        <Button
-          text="訂單狀態"
-          onClick={() => handleNavigate("/member/detail", "訂單狀態")}
-        />
-        <Button
-          text="喜好項目"
-          onClick={() => handleNavigate("/member/detail", "喜好項目")}
-        />
+        {role !== "vendor" && (
+          <>
+            <Button
+              text="個人資料"
+              onClick={() => handleNavigate("/member/detail", "個人資料")}
+            />
+            <Button
+              text="訂單狀態"
+              onClick={() => handleNavigate("/member/detail", "訂單狀態")}
+            />
+            <Button
+              text="喜好項目"
+              onClick={() => handleNavigate("/member/detail", "喜好項目")}
+            />
+          </>)}
         <Button text="登出" isPrimary onClick={handleLogout} />
       </div>
       {/* 頁尾 */}
