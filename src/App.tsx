@@ -7,6 +7,7 @@ import ProductDetail from "./Pages/ProductDetail.tsx";
 import MemberCenter from "./Pages/MemberCenterPage.tsx";
 import CenterDetail from "./Pages/CenterDetailPage.tsx";
 import SalerPage from "./Pages/SalerPage.tsx";
+import OrderPage from "./Pages/OrderPage.tsx";
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
 
       {/* Saler route */}
       <Route path="/saler" Component={SalerPage} />
+
+      {/* Order route */}
+      <Route path="/order" Component={OrderPage} />
     </Routes>
   );
 }
