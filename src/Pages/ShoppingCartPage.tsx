@@ -12,6 +12,7 @@ interface CartItem {
   description: string;
   price: number;
   count: number;
+  remain : number;
 }
 
 const ShoppingCartPage = () => {
@@ -41,13 +42,14 @@ const ShoppingCartPage = () => {
         });
         console.log("購物車商品：", response.data); // 主控台顯示成功訊息
         // 將返回的資料轉換為 CartItem 格式
-        const formattedCartItems = response.data.map((item: { id: number; name: string; image_url: string | { String: string }; description: string; price: number; count: number }) => ({
+        const formattedCartItems = response.data.map((item: { id: number; name: string; image_url: string | { String: string }; description: string; price: number; count: number; remain: number }) => ({
           id: item.id,
           name: item.name,
           image: typeof item.image_url === "string" ? item.image_url : item.image_url.String, // 提取字串
           description: item.description,
           price: item.price,
           count: item.count,
+          remain: item.remain
         }));
 
         setCartItems(formattedCartItems);
@@ -154,6 +156,19 @@ const ShoppingCartPage = () => {
         updateCart(id, 1); // 更新購物車數量
       }
     } else {
+      if (cartItems) {
+        const item = cartItems.find(item => item.id === id);
+        if (item && count > item.remain) {
+          alert("超過庫存數量");
+          setCartItems((prevItems) =>
+            prevItems?.map((item) =>
+              item.id === id ? { ...item, count: item.remain } : item
+            ) || null
+          );
+          updateCart(id, item.remain); // 更新購物車數量
+          return;
+        }
+      }
       updateCart(id, count); // 更新購物車數量
     }
   };
@@ -186,6 +201,14 @@ const ShoppingCartPage = () => {
   };
 
   const increaseQuantity = (id: number) => {
+    // check remain
+    if (cartItems) {
+      const item = cartItems.find(item => item.id === id);
+      if (item && item.count >= item.remain) {
+        alert("超過庫存數量");
+        return;
+      }
+    }
     setCartItems((prevItems) =>
       prevItems?.map((item) =>
         item.id === id ? { ...item, count: item.count + 1 } : item
@@ -249,7 +272,7 @@ const ShoppingCartPage = () => {
                         handleQuantityChange(item.id, newCount); // 更新數量
                       }}
                       onBlur={(e) => handleBlur(item.id, parseInt(e.target.value || "0", 10))} // 輸入完後進行檢查
-                      className="text-center border rounded-lg"
+                      className="text-center border rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       size={Math.max(item.count.toString().length, 1)}
                       style={{ maxWidth: "80px", minWidth: "40px" }}
                     />

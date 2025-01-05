@@ -87,6 +87,7 @@ const FrontPage = () => {
           image: (product.image_url?.String || ''),  // 使用可選鏈運算子
           liked: false,
         }));
+        setProducts(cleanedData);
 
         if (!token) return;
 
@@ -110,61 +111,26 @@ const FrontPage = () => {
 
   const handleLike = async (productId: number) => {
     if (!token) {
-      alert("請先登入");
-      window.location.href = "/auth";
-      return;
+      console.error("Please login first")
+      window.location.href = "/auth"
+      return
     }
-
+    const isCurrentlyLiked = products.find((product) => product.id === productId)?.liked;
     try {
-      await axios.post(
-        `http://localhost:8080/api/favorite/add?product_id=${productId}`,
-        {},
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
-      setProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === productId ? { ...product, liked: !product.liked } : product
-        )
-      );
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          localStorage.removeItem("authToken"); // 刪除 token
-          window.location.href = "/auth"; // 跳轉到登入頁面
-          return;
-        }
-        if (err.response.data.error === "Product is already in favorite") {
-          try {
-            await axios.delete(
-              `http://localhost:8080/api/favorite/delete?product_id=${productId}`,
-              {
-                headers: {
-                  Authorization: `${token}`,
-                },
-              }
-            );
-            setProducts((prevProducts) =>
-              prevProducts.map((product) =>
-                product.id === productId ? { ...product, liked: !product.liked } : product
-              )
-            );
-          } catch (deleteErr) {
-            if (axios.isAxiosError(deleteErr) && deleteErr.response) {
-              alert(`刪除錯誤: ${deleteErr.response.data.error}`);
-            } else {
-              alert("刪除錯誤: 未知錯誤");
-            }
-          }
-        } else {
-          alert(`錯誤: ${err.response.data.error}`);
-        }
-      } else {
-        alert("網絡錯誤，請稍後再試");
+      if (isCurrentlyLiked) {
+        alert("你已經收藏過，若要取消收藏，請到喜歡列表頁面解除收藏")
+        return
       }
+      await axios.post(`http://localhost:8080/api/favorite/add?product_id=${productId}`, null, {
+        headers: { Authorization: `${token}` }
+      })
+      setProducts((prevItems) =>
+        prevItems.map((prevItem: any) =>
+          prevItem.id === productId ? { ...prevItem, liked: !isCurrentlyLiked } : prevItem
+        )
+      )
+    } catch (error) {
+      alert("你已經收藏過，若要取消收藏，請到喜歡列表頁面解除收藏")
     }
   };
 
