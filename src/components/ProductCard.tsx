@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 interface ProductCardProps {
   id: number
   name: string
@@ -46,13 +47,13 @@ function ProductCard({ id, name, price, description, tags, image, liked, toggleL
           <span>Like</span>
         </button>
 
-        <a
-          href={`/product/${id}`}
+        <Link
+          to={`/product/${id}`}
           className="text-gray-600 flex items-center gap-1"
         >
           <span>🛒</span>
           <span>Buy Now</span>
-        </a>
+        </Link>
       </div>
     </div>
   )
