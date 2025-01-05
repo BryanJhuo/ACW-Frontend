@@ -40,6 +40,9 @@ const MemberCenter: React.FC = () => {
 
   const handleLogout = () => {
     console.log("登出");
+    localStorage.removeItem("authToken");
+    alert("登出成功，即將返回首頁");
+    navigate("/");
   };
 
   const handleNavigate = (path: string, text: string) => {
@@ -51,7 +54,7 @@ const MemberCenter: React.FC = () => {
       {/* 頁首 */}
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
       {/* 內容 */}
-      <div className="w-full max-w-xs mx-auto mt-20 space-y-4">
+      <div className="w-full max-w-xs mx-auto my-20 space-y-4">
         <h1 className="text-3xl font-bold text-center">會員中心</h1>
         <Button
           text="個人資料"

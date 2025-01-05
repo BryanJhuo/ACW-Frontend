@@ -87,6 +87,7 @@ const FrontPage = () => {
           image: (product.image_url?.String || ''),  // 使用可選鏈運算子
           liked: false,
         }));
+        setProducts(cleanedData);
 
         if (!token) return;
 
