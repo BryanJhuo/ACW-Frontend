@@ -87,7 +87,8 @@ function ShopPage() {
         setTags(cleanedTag)
         setTotalPages(Math.ceil(cleanedData.length / 6))
         setCurrentPage(cleanedData.length === 0 ? 0 : 1)
-        setPriceRange([0, Math.max(...cleanedData.map((item: any) => item.price))])
+        const maxPrice = cleanedData.length === 0 ? 0 : Math.max(...cleanedData.map((item: any) => item.price))
+        setPriceRange([0, maxPrice])
 
         const token = localStorage.getItem("authToken")
         if (!token) return
@@ -196,7 +197,7 @@ function ShopPage() {
             <Slider
               range
               min={0}
-              max={Math.max(...items.map((item: any) => item.price))}
+              max={items.length === 0 ? 0 : Math.max(...items.map((item: any) => item.price))}
               value={priceRange}
               onChange={(value: number | number[]) => {
                 if (Array.isArray(value)) {
