@@ -166,8 +166,7 @@ function ShopPage() {
   return (
     <>
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
-
-      <div className="flex bg-gray-50 min-h-min flex-1 p-6 container mx-auto max-w-6xl">
+      <div className="flex bg-gray-50 min-h-screen flex-1 p-6 container mx-auto max-w-6xl">
         <aside className="w-64 bg-white p-4 border rounded-xl shadow-sm">
           <h2 className="font-bold mb-4 font-funnel-sans text-lg">Filter</h2>
           <hr className="mb-2"></hr>
@@ -235,12 +234,13 @@ function ShopPage() {
               價格由低到高
             </button>
           </div>
-
-          <ProductGrid
-            items={filteredItems.slice((currentPage - 1) * 6, currentPage * 6)}
-          />
-
-          <div className="flex justify-between items-center mt-6">
+          
+          { filteredItems.length > 0 ? (
+            <>
+            <ProductGrid
+              items={filteredItems.slice((currentPage - 1) * 6, currentPage * 6)}
+            />
+            <div className="flex justify-between items-center mt-6">
             <button
               className={`px-2 py-1 border rounded ${currentPage === 1 ? 'opacity-50' : ''}`}
               disabled={currentPage === 1}
@@ -259,8 +259,17 @@ function ShopPage() {
               Next &rarr;
             </button>
           </div>
+          </>
+          ) : (
+            <div className="text-center text-gray-500 font-funnel-sans text-2xl mt-6
+            ">沒有符合條件的商品</div>
+          )}
+
+        
+
         </div>
       </div>
+
       <Footer />
     </>
   )

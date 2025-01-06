@@ -8,37 +8,43 @@ import MemberCenter from "./Pages/MemberCenterPage.tsx";
 import CenterDetail from "./Pages/CenterDetailPage.tsx";
 import SalerPage from "./Pages/SalerPage.tsx";
 import OrderPage from "./Pages/OrderPage.tsx";
+import FAQPage from "./Pages/FAQPage.tsx";
 
 function App() {
   return (
-    <Routes>
-      {/* Authentication route */}
-      <Route path="/auth" Component={AuthenticationPage} />
+    <div className="min-h-screen bg-gray-100">
+      <Routes>
+        {/* Authentication route */}
+        <Route path="/auth" Component={AuthenticationPage} />
 
-      {/* FrontPage route */}
-      <Route path="/" Component={FrontPage} />
+        {/* FrontPage route */}
+        <Route path="/" Component={FrontPage} />
 
-      {/* ShoppingCart route */}
-      <Route path="/cart" Component={ShoppingCart} />
+        {/* ShoppingCart route */}
+        <Route path="/cart" Component={ShoppingCart} />
 
-      {/* ProductDetail route */}
-      <Route path="/product/:id" Component={ProductDetail} />
+        {/* ProductDetail route */}
+        <Route path="/product/:id" Component={ProductDetail} />
 
-      {/* Shop route */}
-      <Route path="/shop" Component={ShopPage} />
+        {/* Shop route */}
+        <Route path="/shop" Component={ShopPage} />
 
-      {/* MemberCenter route*/}
-      <Route path="/member" Component={MemberCenter} />
+        {/* MemberCenter route*/}
+        <Route path="/member" Component={MemberCenter} />
 
-      {/* MemberCenterDetail route */}
-      <Route path="/member/detail" Component={CenterDetail} />
+        {/* MemberCenterDetail route */}
+        <Route path="/member/detail" Component={CenterDetail} />
 
-      {/* Saler route */}
-      <Route path="/saler" Component={SalerPage} />
+        {/* Saler route */}
+        <Route path="/saler" Component={SalerPage} />
 
-      {/* Order route */}
-      <Route path="/order" Component={OrderPage} />
-    </Routes>
+        {/* Order route */}
+        <Route path="/order" Component={OrderPage} />
+
+        {/* FAQ route */}
+        <Route path="/faq" Component={FAQPage} />
+      </Routes>
+    </div>
   );
 }
 
