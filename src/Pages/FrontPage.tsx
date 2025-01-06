@@ -32,19 +32,19 @@ const FrontPage = () => {
     },
     {
       src: "https://cms.cdn.91app.com/images/compress/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1733279402-6i5l1zorx8_m_1920x980.webp",
-      link: "https://youtu.be/s8Sd3Y2GyDY?si=LHiCqZtwQEPKlYs5&t=78",
+      link: "/shop?search=炭治郎"
     },
     {
       src: "https://cms.cdn.91app.com/images/compress/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1699239031-gn4q60paoi_m_1920x980.webp",
-      link: "/shop?search=里維",
+      link: "/shop?search=里維"
     },
     {
       src: "https://cms.cdn.91app.com/images/original/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1656397804-pfdg8v35in_m_1200x613_800x408_400x204.jpg",
-      link: "/shop?search=安妮亞",
+      link: "/shop?search=安妮亞"
     },
     {
-      src: "https://kk-promote-template.v3mh.com/answer-admin/prod/image/230616/GWelBMEjE.jpg",
-      link: "/shop?search=炭治郎",
+      src: "https://cms.cdn.91app.com/images/original/40809/72755d45-b6ac-4cc6-8c80-ba8b58804583-1676623142-o5kvux8gaj_m_1200x613_800x408_400x204.jpg",
+      link: "https://youtu.be/s8Sd3Y2GyDY?si=LHiCqZtwQEPKlYs5&t=78",
     }
   ];
 
