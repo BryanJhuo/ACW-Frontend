@@ -64,6 +64,9 @@ const InventoryManagementForm: React.FC = () => {
       if (name === "disability") {
         setEditingProduct({ ...editingProduct, [name]: value === "true" });
       }
+      else if (name === "price" || name === "remain") {
+        setEditingProduct({ ...editingProduct, [name]: parseInt(value) });
+      }
       else {
         setEditingProduct({ ...editingProduct, [name]: value });
       }

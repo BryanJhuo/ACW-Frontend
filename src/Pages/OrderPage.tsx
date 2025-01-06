@@ -279,9 +279,9 @@ const OrderPage: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <Header searchText={searchText} onSearchChange={handleSearchChange} />
-      <div className="max-w-2xl mx-auto py-12 min-h-min">
+      <div className="max-w-2xl mx-auto py-12 min-h-[calc(100vh-300px)]">
         {/* Step Progress Indicator */}
         <div className="flex items-center justify-around mb-6">
           {[1, 2, 3].map((step) => (
@@ -426,7 +426,7 @@ const OrderPage: React.FC = () => {
         )}
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
