@@ -75,13 +75,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           <p className="text-gray-700 font-semibold">{order.id}</p>
         </div>
         {/* Order State */}
+        {/* All State Value : Math.random() > 0.5 ? '未出貨' : Math.random() > 0.5 ? '處理中' : Math.random() > 0.5 ? '運送中' : '已送達', */}
         <div
           className={`text-sm rounded-full px-3 py-1 ${
-            order.state === "已完成"
+            order.state === "已送達"
               ? "bg-green-100 text-green-600"
-              : order.state === "待出貨"
+              : order.state === "未出貨"
               ? "bg-red-100 text-red-600"
-              : "bg-blue-100 text-blue-600"
+              : order.state === "處理中"
+              ? "bg-blue-100 text-blue-600"
+              : "bg-rose-300 text-rose-600"
           }`}
         >
           {order.state}
@@ -151,9 +154,9 @@ const OrderForm: React.FC = () => {
     }, 1000);
   }, []);
 
-  const historyOrders = orders.filter((order) => order.state === "已完成");
+  const historyOrders = orders.filter((order) => order.state === "已送達");
   const shippingOrders = orders.filter(
-    (order) => order.state === "出貨中" || order.state === "待出貨"
+    (order) => order.state === "未出貨" || order.state === "處理中" || order.state === "運送中"
   );
   
   return (
